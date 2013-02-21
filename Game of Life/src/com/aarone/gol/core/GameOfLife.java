@@ -1,5 +1,6 @@
 package com.aarone.gol.core;
 
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +29,24 @@ public class GameOfLife {
 	private int generation;
 	private int population;
 	private ArrayList<IGolCommand> commands;
+	
+	public GameOfLife(CellState[][] states, IGameRule gameRule, INeighbourhoodStrategy neighbourhoodStrategy){
+		this.board = new Board(states[0].length, states.length);
+		this.gameRule = gameRule;
+		this.neighbourhoodStrategy = neighbourhoodStrategy;
+		
+		initialiseBoard(false);
+		generation = 0;
+		population = countPop();
+		commands = new ArrayList<>(board.getWidth() * board.getHeight());
+		
+		for(int y = 0; y < states.length; y++){
+			for(int x = 0; x < states[y].length; x++){
+				board.setCell(board.getIndex(x, y), states[y][x]);
+			}
+		}
+		
+	}
 	
 	public GameOfLife(int width, int height, IGameRule gameRule, INeighbourhoodStrategy neighbourhoodStrategy){
 		this.board = new Board(width, height);
@@ -85,8 +104,6 @@ public class GameOfLife {
 		return count;
 	}
 
-
-
 	private void initialiseBoard(boolean randomSeed) {
 		CellState[] validStates = gameRule.getValidSeedStates();
 		shouldUpdate = new boolean[board.getMaxIndex()];
@@ -99,8 +116,24 @@ public class GameOfLife {
 		}
 	}
 	
-	private String getBoardString(){
+	public String getBoardString(){
 		return board.getBoardString();
+	}
+	
+	public int getWidth(){
+		return board.getWidth();
+	}
+	
+	public int getHeight(){
+		return board.getHeight();
+	}
+	
+	public CellState getCellAt(int index){
+		return board.getCell(index);
+	}
+	
+	public CellState getCellAt(int x, int y){
+		return board.getCell(board.getIndex(x, y));
 	}
 	
 	

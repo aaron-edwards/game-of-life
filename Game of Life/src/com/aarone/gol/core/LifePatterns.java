@@ -4,9 +4,9 @@ public class LifePatterns {
 
 	
 	public static final CellState[][] blinker = parsePattern(new String[]{
-			"-O-", 
-			"-O-", 
-			"-O-"}, LifeRules.ConwaysGameOfLifeRules);
+			"-0-", 
+			"-0-", 
+			"-0-"}, LifeRules.ConwaysGameOfLifeRules);
 
 	private static CellState[][] parsePattern(String[] strings, IGameRule rules) {
 		
@@ -23,7 +23,7 @@ public class LifePatterns {
 						state = validStates[i];
 					}
 				}
-				states[x][y] = state;
+				states[y][x] = state;
 			}
 		}
 
